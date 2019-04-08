@@ -129,8 +129,8 @@ proc ::QMtool::load_gaussian_log { file {molid -1}} {
       }
       set linespectrum [read_harmonic_frequencies $file]
       if {[llength $linespectrum]} {
-	 if {[winfo exists .qmtool.menu.analysis]} {
-	    .qmtool.menu.analysis entryconfigure 1 -state normal
+	 if {[winfo exists .qmtool.menubar.analysis.menu]} {
+	    .qmtool.menubar.analysis.menu entryconfigure 1 -state normal
 	 }
 	 puts "Harmonic frequencies: [llength $linespectrum] ($nimag imaginary)"
 	 foreach f $linespectrum {
@@ -2570,7 +2570,7 @@ proc ::QMtool::read_scf_energies { file } {
    if {[llength $tmpscf]} { lappend scfenergies $tmpscf }
 
    if { [llength $scfenergies]>1 && [winfo exists .qmtool] } { 
-      .qmtool.menu.analysis entryconfigure 0 -state normal
+      .qmtool.menubar.analysis.menu entryconfigure 0 -state normal
    }
 
    return $scfenergies
