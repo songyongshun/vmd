@@ -312,7 +312,18 @@ proc ::QMtool::read_zmatrix { fid {termstring {}}} {
 	 puts [format "%4i %5s % 10.3f % 10.3f % 10.3f" $natoms $name $x $y $z]
 
 	 continue 
-      } 
+      }
+      # add another case:
+      # For example, gjf file: N -1 2.61767500   -1.38422700    1.18077400 L
+            if {  ([llength $line]==6 && !([string is integer [lindex $line 2]])) } {
+     lappend cart [lrange $line end-3 end-1]
+
+     # Print the coordinates
+     foreach {x y z} [lrange $line end-3 end-1] {break}
+     puts [format "%4i %5s % 10.3f % 10.3f % 10.3f" $natoms $name $x $y $z]
+
+     continue
+      }
 
 
       # If here, this is a non-cartesian zmatrix line
