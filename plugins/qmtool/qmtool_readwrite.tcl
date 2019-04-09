@@ -1898,12 +1898,12 @@ proc ::QMtool::read_gaussian_intcoords { fid {natoms 0}} {
 	    set icfield 3;
 	 }
       }
-
+     # make "incr ncoords" emerge ealier, otherwise failed when freeze is used.
       if {$offset>5} {
 	 if {[string match "----------------*" $line]} {
 	    break
 	 }
-
+	 incr ncoords;
 	 set name [lindex $line 1];
 	 set type [string index $name 0]
 	 switch $type {
@@ -1963,7 +1963,7 @@ proc ::QMtool::read_gaussian_intcoords { fid {natoms 0}} {
 	    }
 	    lappend zmat [list $name $type $indexlist $val {{} {} {}} $flag $scan]
 	 }
-	 incr ncoords;
+	 #incr ncoords;
       }
    }
 
