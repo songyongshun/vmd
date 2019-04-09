@@ -302,8 +302,9 @@ proc ::QMtool::read_zmatrix { fid {termstring {}}} {
       #  O1                    0.178     0.       -1.348
       # or
       #  C,0,-1.2680085197,0.,0.5811050822 (the comma has been replaced by whitespace before)
+      #  C,-1, etc.
       if { ( ([llength $line]==4 && !([string is integer [lindex $line 1]])) \
-		|| ([llength $line]==5 && [lindex $line 1]==0 && !([string is integer [lindex $line 2]])) ) } { 
+		|| ([llength $line]==5 && !([string is integer [lindex $line 2]])) ) } { 
 	 # These are cartesian coords. Add them and continue.
 	 lappend cart [lrange $line end-2 end]
 
