@@ -1009,7 +1009,8 @@ proc ::QMtool::parse_route_section { route } {
    set rt [string map {"==" "=" "iop=(" "iop("} $rt]
 
    # Remove route keyword
-   set rt [lrange $rt 1 end]
+   # better not, since #opt is also ok.
+   #set rt [lrange $rt 1 end]
 
    # Geom keyword
    set foundlist [lsearch -all -regexp $rt {geom=}]
@@ -1038,6 +1039,9 @@ proc ::QMtool::parse_route_section { route } {
 
    # Opt/Freq/Scan keyword
    set found [lsearch -regexp $rt {opt}]
+   if {$found>=0} { set simtype "Geometry optimization" }
+   # support #opt
+   set found [lsearch -regexp $rt {#opt}]
    if {$found>=0} { set simtype "Geometry optimization" }
    set found [lsearch -regexp $rt {freq}]
    if {$found>=0} { set simtype "Frequency"; set coordtype "Internal (auto)" }
