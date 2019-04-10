@@ -133,6 +133,7 @@ proc ::QMtool::init_variables { ns } {
       variable extratitle {};    # automatically generated extra title string
       variable totalcharge {};   # total system charge
       variable multiplicity {};  # multiplicity
+      variable freeze {};        # freeze
       variable nimag        {};  # imaginary frequencies
       variable scfenergies  {};  # SCF energies and relative SCF energies
       variable dipolemoment {};  # Dipole moment from wavefunction
