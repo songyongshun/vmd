@@ -629,9 +629,9 @@ proc ::QMtool::write_gaussian_input { file } {
    # title and coordinates are not put out if Geom=AllCheck:
    if {!($guess=="Read geometry and wavefunction from checkfile")} {
       set alltitle {}
-      if {[llength $autotitle]}  {append alltitle "${autotitle}"}
+      #if {[llength $autotitle]}  {append alltitle "${autotitle}"}
       if {[llength $extratitle]} {append alltitle "\n${extratitle}"}
-      if {[llength $title]}      {append alltitle "\n${title}"}
+      if {[llength $title]}      {append alltitle "${title}"}
       
       # title line may not be longer than 80 chars, break it if necessary
       if {[llength $alltitle]} { 
@@ -655,58 +655,58 @@ proc ::QMtool::write_gaussian_input { file } {
       }  
    }
 
-   if {$coordtype=="Internal (explicit)" && [llength $zmat]} {
-      # First delete all existing coordinates
-      puts $fid "B * * R"
-      puts $fid "A * * * R"
-      puts $fid "L * * * R"
-      puts $fid "D * * * * R"
-      puts $fid "O * * * * R"
-   }
+#   if {$coordtype=="Internal (explicit)" && [llength $zmat]} {
+#      # First delete all existing coordinates
+#      puts $fid "B * * R"
+#      puts $fid "A * * * R"
+#    puts $fid "L * * * R"
+#     puts $fid "D * * * * R"
+#      puts $fid "O * * * * R"
+#   }
 
-   if {$coordtype=="ModRedundant" || $coordtype=="Internal (explicit)"} {
-      # Fixed cartesian coordinates
-      variable atomproplist
-      set num 1
-      foreach atom $atomproplist {
-	 if {[string match {*F*} [get_atomprop Flags [expr {$num-1}]]]} {
-	    puts $fid "X $num B"
-	    puts $fid "X $num F"
-	 }
-	 incr num
-      }
-      # Add internal coordinates explicitly:
-      set num 0
-      foreach entry $zmat {
-	 if {$num==0} { incr num; continue }
-	 set indexes {}
-	 foreach ind [lindex $entry 2] {
-	    lappend indexes [expr {$ind+1}]
-	 }
-	 set type [string toupper [string index [lindex $entry 1] 0]]
-	 # We must model impropers as dihedrals because Gaussian ignores
-	 # out-of-plane bends.
-	 if {$type=="I"} { set type "D" }
-	 if {$type=="O"} { set type "D" }
-	 # Something is weird with the linear bend format in Gaussian:
-	 if {$type=="L"} { 
-	    set val {}
-	 } else {
-	    set val [lindex $entry 3]
-	 }
-	 set scan {}
-	 if {[string match {*S*} [lindex $entry 5]]} {
-	    variable scansteps
-	    variable scanstepsize
-	    set val "[expr {[lindex $entry 3]-0.5*$scansteps*$scanstepsize}]"
-	    set scan "$scansteps $scanstepsize"
-	 } else { 
-	 }
-	 puts $fid "$type $indexes $val [regsub {[QCRM]} [lindex $entry 5] {}]  $scan"
-	 incr num
-      }
-      puts $fid ""
-   }
+#   if {$coordtype=="ModRedundant" || $coordtype=="Internal (explicit)"} {
+#      # Fixed cartesian coordinates
+#      variable atomproplist
+#      set num 1
+#      foreach atom $atomproplist {
+#	 if {[string match {*F*} [get_atomprop Flags [expr {$num-1}]]]} {
+#	    puts $fid "X $num B"
+#	    puts $fid "X $num F"
+#	 }
+#	 incr num
+#      }
+#      # Add internal coordinates explicitly:
+#      set num 0
+#      foreach entry $zmat {
+#	 if {$num==0} { incr num; continue }
+#	 set indexes {}
+#	 foreach ind [lindex $entry 2] {
+#	    lappend indexes [expr {$ind+1}]
+#	 }
+#	 set type [string toupper [string index [lindex $entry 1] 0]]
+#	 # We must model impropers as dihedrals because Gaussian ignores
+#	 # out-of-plane bends.
+#	 if {$type=="I"} { set type "D" }
+#	 if {$type=="O"} { set type "D" }
+#	 # Something is weird with the linear bend format in Gaussian:
+#	 if {$type=="L"} { 
+#	    set val {}
+#	 } else {
+#	    set val [lindex $entry 3]
+#	 }
+#	 set scan {}
+#	 if {[string match {*S*} [lindex $entry 5]]} {
+#	    variable scansteps
+#	    variable scanstepsize
+#	    set val "[expr {[lindex $entry 3]-0.5*$scansteps*$scanstepsize}]"
+#	    set scan "$scansteps $scanstepsize"
+#	 } else { 
+#	 }
+#	 puts $fid "$type $indexes $val [regsub {[QCRM]} [lindex $entry 5] {}]  $scan"
+#	 incr num
+#     }
+#      puts $fid ""
+#   }
 
    variable PCMmethod
    variable calcdGsolv
