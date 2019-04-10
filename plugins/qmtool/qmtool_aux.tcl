@@ -686,7 +686,9 @@ proc ::QMtool::alias_atomnames {{verbose "verbose"}} {
 	 puts "Aliased name [get_atomprop Name $i] --> [get_atomprop Elem $i][expr $i+1]"
       }
       set_atomprop Elem $i [get_atomprop Elem $i]
-      set_atomprop Name $i [get_atomprop Elem $i][expr $i+1]
+      #set_atomprop Name $i [get_atomprop Elem $i][expr $i+1]
+      set_atomprop Name $i [get_atomprop Name $i]
+
       incr i
    }
    atomedit_update_list
