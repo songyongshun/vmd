@@ -36,6 +36,7 @@ proc ::QMtool::setup_QM_simulation {args} {
    variable coordtype
    variable totalcharge
    variable multiplicity
+   variable freeze
    variable availmethods
    variable ncoords
 
@@ -315,7 +316,13 @@ proc ::QMtool::setup_QM_simulation {args} {
    entry $v.edit.multipentry -textvariable ::QMtool::multiplicity  -width 11
    grid $v.edit.multiplabel -column 0 -row 21 -sticky w
    grid $v.edit.multipentry -column 1 -row 21 -sticky w
-
+   ##  edited by Song ##
+   ## directly put text value to variable freeze  ##
+   label $v.edit.freezelabel -text "freeze(1=Yes;0=No):"
+   entry $v.edit.freezeentry -textvariable ::QMtool::freeze  -width 11
+   grid $v.edit.freezelabel -column 0 -row 22 -sticky w
+   grid $v.edit.freezeentry -column 1 -row 22 -sticky w
+   ##  end edited by Song ##
 
    # frame for Ok/Cancel buttons
    frame $v.okcancel     
@@ -602,6 +609,7 @@ proc ::QMtool::write_gaussian_input { file } {
    variable extratitle
    variable totalcharge
    variable multiplicity
+   variable freeze
    variable checkfile
    variable nproc
    variable memory
@@ -648,7 +656,7 @@ proc ::QMtool::write_gaussian_input { file } {
  	    # We have to get the name from atomproplist instead of $sel 
  	    # since Paratool might change the names in QMtool.
  	    set name [get_atomprop Name $atom]
-	    puts $fid "$name $coord"
+	    puts $fid "$name  $freeze   $coord"
  	 }
  	 $sel delete
 	 puts $fid ""
