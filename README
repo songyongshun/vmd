@@ -5,3 +5,14 @@ LICENSE and README files.
 
 The contents of this directory are unpacked from the archive
 `vmd-1.9.3.src.tar.gz`.
+
+Konwn issues:
+1. For MacOS to install, please don't use X86_64, since vmd is not support 64bit for MacOS.
+2. cat configure.options
+    MACOSXX86 OPENGL TCL NOSTATICPLUGINS 
+# OPENGL must provided, otherwise cannot invoke x11.
+# NOSTATICPLUGINS remove errors, otherwise: 
+# PluginMgr.C:34:10: fatal error: 'libmolfile_plugin.h' file not found
+# TCL is needed, otherwise cannot load the main program.
+# On MacOS, tcl8.5 should be compiled from source, to obtain libtcl8.5-x11.a file. 
+# However, I haven't test that.
