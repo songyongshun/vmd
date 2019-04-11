@@ -1045,8 +1045,9 @@ proc ::QMtool::parse_route_section { route } {
    # support #opt
    set found [lsearch -regexp $rt {#opt}]
    if {$found>=0} { set simtype "Geometry optimization" }
-   set found [lsearch -regexp $rt {freq}]
-   if {$found>=0} { set simtype "Frequency"; set coordtype "Internal (auto)" }
+   #don't support freq, otherwise can only readin the first frame.
+   #set found [lsearch -regexp $rt {freq}]
+   #if {$found>=0} { set simtype "Frequency"; set coordtype "Internal (auto)" }
    set found [lsearch -regexp $rt {scan}]
    if {$found>=0} { set simtype "Rigid potential scan" }
    variable hinderedrotor 0
