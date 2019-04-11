@@ -116,8 +116,10 @@ proc ::QMtool::load_gaussian_log { file {molid -1}} {
 
       # Read Thermochemistry section
       set thermal_energy [read_thermal_energy $file]
-
-      if {$normalterm} {
+      
+      # In G09, read_hessian return null, so jump over this.
+      #if {$normalterm} {
+      if {!$normalterm}
 	 set inthessian  [read_hessian $file $ncoords "internal"]
 	 set carthessian [read_hessian $file [expr {3*$natoms}] "cartesian"]
 	 set inthessian_kcal [convert_inthessian_kcal $inthessian $method $zmat]
