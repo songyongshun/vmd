@@ -628,8 +628,8 @@ proc ::QMtool::write_gaussian_input { file } {
    puts "checkfile2=$checkfile"
 
    set fid [open $file w]
-   puts $fid "%chk=$checkfile"
-   puts $fid "%nproc=$nproc"
+   #puts $fid "%chk=$checkfile"
+   puts $fid "%nprocshared=$nproc"
    puts $fid "%mem=$memory"
    puts $fid $route
    puts $fid ""
