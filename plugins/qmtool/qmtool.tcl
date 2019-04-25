@@ -1216,9 +1216,9 @@ proc ::QMtool::opendialog { type {initialfile ""} } {
 	 {{PSF files}       {.zmt .zmat}  }
 	 {{All files}        *            }
       }
-   } elseif {$type=="com" || $type=="writecom"} {
+   } elseif {$type=="com" || $type=="writecom" || $type=="gjf"} {
       set types {
-	 {{Gaussian input files}       {.com .cmd}  }
+	 {{Gaussian input files}       {.com .cmd .gjf}  }
 	 {{All files}        *            }
       }
    } elseif {$type=="int" || $type=="writeint" || $type=="writeselint"} {
