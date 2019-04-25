@@ -1457,7 +1457,7 @@ proc ::QMtool::read_gaussian_log { file {intomolid -1}} {
 	    variable basename [file rootname $checkfile]
 	    continue
 	 }
-	 if {[lindex $line 0]=="nproc"} {
+	 if {[lindex $line 0]=="nprocshared"} {
 	    variable nproc [lindex $line 1]
 	    continue
 	 }
