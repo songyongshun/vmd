@@ -570,7 +570,7 @@ proc ::autoionize::autoionize_core {args} {
 
     # Read in topology file
     puts "Autoionize) Reading CHARMM topology file..."
-    set topfile [file join $env(CHARMMTOPDIR) toppar_water_ions_namd.str]
+    set topfile [file join $env(CHARMMTOPDIR) toppar_water_ions_namd.rtf]
     topology $topfile
 
     # Make topology entries
