@@ -1170,7 +1170,7 @@ proc ::QMtool::load_file { file {type unknown} } {
    variable molidlist
    if {![llength $molidlist]} { init_variables ::QMtool }
    set molid -1
-   puts $type
+   
    switch $type {
       int { read_intcoords $file; }
       zmt { set molid [read_zmtfile $file] }

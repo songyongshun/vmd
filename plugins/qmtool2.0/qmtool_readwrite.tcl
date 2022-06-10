@@ -224,15 +224,24 @@ proc ::QMtool::read_zmatrix { fid {termstring {}}} {
    variable zmat [list [list $natoms $ncoords $nbonds $nangles $ndiheds $nimprops $havepar $havefc]]
 
    # First read in the complete Z-matrix
+   set chkstring "Redundant internal coordinates found in file."
+
    while {![eof $fid]} {
       set line [string map {, " " / " "} [string trim [gets $fid]]]
       # Skip comments starting with '#':
+
       if {[string first "\#" $line]==0} { continue }
 
       # Skip leading blank lines
       if {!$natoms && ![llength $line]} { continue }
-
+       
+      # add by ys_song; for the case read coordinate from chk file.
+      if {[string match $chkstring $line]} { 
+        gets $fid
+        continue 
+        }
       # Check for user provided termination string
+      # really need?
       if {[string match $termstring $line]} { break }
       puts "natoms $natoms; $line"
 
@@ -260,7 +269,7 @@ proc ::QMtool::read_zmatrix { fid {termstring {}}} {
  	 set readvariables 1
        }
     }
-
+   
    #set vararray {}
    if {$readvariables} {
       while {![eof $fid]} {
@@ -447,10 +456,11 @@ proc ::QMtool::read_zmatrix { fid {termstring {}}} {
    if {$havepar!=$ncoords || $noncartlines} {
       set zmat [sort_zmat $zmat]
    }
-
+   
    if {$haveintcoor && [llength $zmat]>1} {
       read_zmat_intcoor $fid $ncoords $termstring
    }
+   
 
    if {[llength $zmat]>1} {
       # Identify the diheral angles that describe out-of-plane bends
@@ -1639,9 +1649,7 @@ proc ::QMtool::read_gaussian_log { file {intomolid -1}} {
 
    # Get the Z-matrix (but not from potential scans invoked by the "Scan" keyword.
    # It's too complicated to parse and we don't need it in this case):
-   puts $zmatgiven
    if {$zmatgiven} {
-      puts "here2"
       read_zmatrix $fid "Recover connectivity data from disk."
 
       if {!($simtype=="Rigid potential scan")} {
@@ -1696,8 +1704,7 @@ proc ::QMtool::read_gaussian_log { file {intomolid -1}} {
    # If no cartesian coords were given or ModRedundant coordinates were read,
    # we must read them from 'Input orientation'.
    variable nmods
-   puts $cartesians
-   puts "here1"
+
    if {![llength [join $cartesians]] || $nmods>0} {
       if {![llength [join $cartesians]]} {
 	 puts "No cartesian coordinates given in Z-matrix."
